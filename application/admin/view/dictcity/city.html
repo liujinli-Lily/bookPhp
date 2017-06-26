@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__CSS__/demo/lanyuan.css">
+
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>城市列表</h5>
+        </div>
+        <div class="ibox-content">
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="example-wrap">
+                <div class="example">
+                    <div class="bootstrap-table">
+                        <div class="fixed-table-container" style="padding-bottom: 0px;">
+                            <div id="paging"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Example Pagination -->
+        </div>
+    </div>
+</div>
+<!-- End Panel Other -->
+</div>
+
+
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript" src="__JS__/lyGrid.js"></script>
+<script type="text/javascript" src="__JS__/lyGridcommon.js"></script>
+<script type="text/javascript">
+var pageii = null;
+var grid = null;
+var rootPath='__IMG__';
+$(function() {
+    grid = lyGrid({
+        id : "paging",
+        l_column : [ {
+            colkey : "id",
+            name : "id",
+            hide : true
+        }, {
+            colkey : "name",
+            name : "名称",
+            align : 'left',
+            width : "180px",
+        }, {
+            colkey : "level_name",
+            name : "标识",
+            width : "100px"
+        }, {
+            colkey : "zip_code",
+            name : "邮编",
+            width : "100px"
+        }, {
+            colkey : "city_code",
+            name : "区号",
+            width : "100px"
+        },{
+            colkey : "lng",
+            width : "100px",
+            name : "经度"
+        },{
+            colkey : "lat",
+            name : "纬度",
+            width : "120px"
+        } ],
+        jsonUrl : './ajax_city_list',
+        checkbox : false,
+        usePage : false,
+        records : 'treelists',
+        treeGrid : {
+            type:1,
+            tree : true,
+            hide:false,
+            name : 'name',
+            id: "id",
+            pid: "parentId"
+        },
+    });
+
+});
+
+</script>
+</body>
+</html>

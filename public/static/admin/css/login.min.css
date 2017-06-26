@@ -1,0 +1,175 @@
+html {
+    height: 100%
+}
+
+body.signin {
+    height: auto;
+    background: url(../images/login-background.jpg) no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: rgba(255, 255, 255, .95)
+}
+
+.signinpanel {
+    width: 1000px;
+    min-width: 900px;
+    margin: 10% auto 0
+}
+
+.signinpanel .logopanel {
+    float: none;
+    width: auto;
+    padding: 0;
+    background: 0 0
+}
+
+.signinpanel .signin-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0
+}
+
+.signinpanel .form-control {
+    display: block;
+    // margin-top: 15px
+}
+
+.signinpanel .uname {
+    background: #fff url(../images/user.png) no-repeat 95% center;
+    color: #333
+}
+
+.signinpanel .pword {
+    background: #fff url(../images/locked.png) no-repeat 95% center;
+    color: #333
+}
+
+.signinpanel .btn {
+    background: url('../images/login-btn.png') no-repeat;
+    width: 230px;
+    height:50px;
+    background-color: none;
+    border:none;
+    border-color: none;
+    text-align: center;
+    margin:0px auto 0;
+    font-size: 20px;
+}
+
+.signinpanel form {
+    background: rgba(255, 255, 255, .2);
+    border: 1px solid rgba(255, 255, 255, .3);
+    -moz-box-shadow: 0 3px 0 rgba(12, 12, 12, .03);
+    -webkit-box-shadow: 0 3px 0 rgba(12, 12, 12, .03);
+    box-shadow: 0 3px 0 rgba(12, 12, 12, .03);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 30px;
+}
+
+.signup-footer {
+    // border-top: solid 1px rgba(255, 255, 255, .3);
+    margin: 20px auto;
+    padding-top: 15px;
+    text-align: center;
+}
+
+@media screen and (max-width:768px) {
+    .signinpanel,
+    .signuppanel {
+        margin: 0 auto;
+        width: 420px!important;
+        padding: 20px
+    }
+    .signinpanel form {
+        margin-top: 20px
+    }
+    .signup-footer,
+    .signuppanel .form-control {
+        margin-bottom: 10px
+    }
+    .signup-footer .pull-left,
+    .signup-footer .pull-right {
+        float: none!important;
+        text-align: center
+    }
+    .signinpanel .signin-info ul {
+        display: none
+    }
+}
+
+@media screen and (max-width:320px) {
+    .signinpanel,
+    .signuppanel {
+        margin: 0 20px;
+        width: auto
+    }
+}
+.m-login-from{
+    width: 680px;
+    height: 416px;
+    margin: 0 auto;
+    padding: 0 80px;
+    background: url('../images/login-bg.png') no-repeat;
+}
+.m-login-from form{
+    background: none;border: none;
+    box-shadow: none;
+}
+.m-login-from .title{
+    height:80px;
+    line-height: 80px;
+    border-bottom:1px solid #fff;
+    text-align: left;
+    clear: both;
+    font-size: 26px;
+}
+.m-login-from .form-control{
+    height: 40px;
+    width: 277px;
+}
+.m-login-from img{
+    height: 40px;
+    width: 90px;
+    margin-left: 10px;
+}
+.signin-info{
+    margin-bottom: 50px;
+    text-align: center;
+}
+.signin-info h2{
+    font-size: 44px;
+}
+.m-login-from .btn-success.active,.m-login-from .btn-success:active,.m-login-from .btn-success:focus,.m-login-from .btn-success:hover{
+    background-color: none;
+    border-color:none;
+    color: #FFF;
+}
+.m-login-from .btn-success:hover {
+    color: #fff;
+    background-color: none;
+    border-color: none;
+}
+.m-login-from input[type=submit].btn-block {
+    width: 230px;
+}
+#err_msg{
+    display: none;
+    margin:0;
+}
+.j-forget{
+    width:270px;
+}
+.j-right{
+    float: right;
+    color: #fff;
+}
+.j-right:hover,.j-right:active,.j-right:visited{
+    color: #fff;
+}
+.layui-layer-content{
+    color: #666;
+}

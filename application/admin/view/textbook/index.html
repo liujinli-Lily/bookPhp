@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教材书管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>教材书管理</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group clearfix col-sm-3">
+                <a href="./addbook"><button class="btn btn-outline btn-primary" type="button">添加教材书</button></a>
+                <a href="javascript:;" class="j-import btn btn-primary" style="width: 76px;height: 36px; line-height: 26px;" onclick="document.getElementById('ExcleImport').click();">批量导入<input type="file" id="ExcleImport" name="myfile" class=""  style="opacity: 0;width: 0px;height: 0;" onchange="uploadExcle(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></a>
+            </div>
+            <!--搜索框开始-->
+            <form id='commentForm' role="form" method="post" class="form-inline">
+                <div class="content clearfix m-b">
+                    <div class="form-group">
+                        <label>书名：</label>
+                        <input type="text" class="form-control" id="j-search" name="title">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="button" style="margin-top:5px" id="search"><strong>搜 索</strong>
+                        </button>
+                    </div>
+                    <div class="form-group clearfix">
+                        <button class="btn  btn-primary j-clickBtn" data-status="1" style="margin-top:5px" type="button">查看已开启的书籍</button>
+                        <button class="btn btn-outline btn-primary j-clickBtn" data-status="0" style="margin-top:5px" type="button">查看已关闭的书籍</button>
+                    </div>
+                </div>
+            </form>
+            <!--搜索框结束-->
+            <div class="hr-line-dashed"></div>
+
+            <div class="example-wrap">
+                <div class="example">
+                    <table id="cusTable" data-height="700">
+                        <thead>
+                        <th data-field="id">id</th>
+                        <th data-field="subject">科目名称</th>
+                        <th data-field="title">书名</th>
+                        <th data-field="semester">学期</th>
+                        <th data-field="grade">年级</th>
+                        <th data-field="price">价格</th>
+                        <th data-field="publishing">版别</th>
+                        <th data-field="isbn">编号</th>
+                        <th data-field="operate">操作</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!-- End Example Pagination -->
+        </div>
+    </div>
+</div>
+<!-- End Panel Other -->
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    function initTable(status) {
+        //先销毁表格
+        $('#cusTable').bootstrapTable('destroy');
+        //初始化表格,动态从服务器加载数据
+        $("#cusTable").bootstrapTable({
+            method: "get",  //使用get请求到服务器获取数据
+            url: "./ajax_sub_list", //获取数据的地址
+            striped: true,  //表格显示条纹
+            pagination: true, //启动分页
+            pageSize: 10,  //每页显示的记录数
+            pageNumber:1, //当前第几页
+            pageList: [5, 10, 15, 20, 25],  //记录数可选列表
+            sidePagination: "server", //表示服务端请求
+            //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+            //设置为limit可以获取limit, offset, search, sort, order
+            queryParamsType : "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数
+                var param = {
+                    offset: params.pageNumber,
+                    limit: params.pageSize,
+                    searchText:$('#j-search').val(),
+                    status:status
+                };
+                return param;
+            },
+            onLoadSuccess: function(){  //加载成功时执行
+                layer.msg("加载成功", {time : 1000});
+            },
+            onLoadError: function(){  //加载失败时执行
+                layer.msg("加载数据失败");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        //调用函数，初始化表格
+        initTable(1);
+
+        //当点击查询按钮的时候执行
+        $("#search").bind("click", initTable);
+    });
+    $(".j-clickBtn").click(function(){
+        var status=$(this).data('status');
+        initTable(status);
+        $(this).removeClass('btn-outline').siblings().addClass('btn-outline');
+    })
+    function book_del(id){
+        layer.confirm('确认删除此教科书?', {icon: 3, title:'提示'}, function(index){
+            //do something
+            $.getJSON('./delete_book', {'id' : id}, function(res){
+                if(res.code == 1){
+                    layer.alert('删除成功');
+                    setTimeout(function(){
+                        initTable(1);
+                    },500)
+                }else{
+                    layer.alert('删除失败');
+                }
+            });
+
+            layer.close(index);
+        })
+
+    }
+    function uploadExcle(obj){
+        if(!checkform(obj)){
+            return;
+        }
+        var formData = new FormData();
+        var name = $("#ExcleImport").attr('name');
+        formData.append("file",obj.files[0]);
+        formData.append("name",name);
+        $.ajax({
+            url : './upExecel',
+            type : 'POST',
+            data : formData,
+            processData : false,
+            contentType : false,
+            beforeSend:function(){
+                layer.load();
+            },
+            success : function(data) {
+                layer.closeAll();
+                if(data.code===1){
+                    layer.alert('导入成功');
+                    setTimeout(function(){
+                        window.location.reload()
+                    },500)
+                }else{
+                    layer.alert('导入失败');
+                }
+            },
+            error : function() {
+                layer.closeAll();
+                layer.alert('导入失败');
+            }
+        });
+    }
+    function checkform(obj){
+        var reg = /^.*\.(?:xls|xlsx)$/i;//文件名可以带空格
+        if (!reg.test(obj.files)) {//校验不通过
+            alert("请上传excel格式的文件!");
+            return;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

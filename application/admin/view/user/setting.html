@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑管理员</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group clearfix">
+                        <a href="JavaScript:;" class="j-edit-pass" onclick="resetPassword('{$user.id}')"><button class="btn btn-outline btn-primary" type="button">修改密码</button></a>
+                    </div>
+                    <form class="form-horizontal m-t" id="commentForm" method="post" onsubmit="return toVaild()">
+                        <input type="hidden" name="id" value="{$user.id}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名：</label>
+                            <div class="input-group col-sm-6">
+                                <input id="username" type="text" readonly class="form-control" name="username" required="" aria-required="true" value="{$user.username}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">单位名称：</label>
+                            <div class="input-group col-sm-6">
+                                <input type="text" class="form-control" value="{$user.organic}" name="organic" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">上级单位：</label>
+                            <div class="input-group col-sm-6">
+                                <input type="text" readonly class="form-control" value="{$superior}">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属区域：</label>
+                            <div class="input-group col-sm-8 m-add-select">
+                                <label class="col-sm-2 control-label" style=" padding: 7px 0 0 0;text-align: center;">湖北省</label>
+                                <select class="form-control j-select-area" name="city_id" required="" aria-required="true" style="margin-right: 10px;" >
+                                    <option>请选择市</option>
+                                    {volist name="city_list" id="vo"}
+                                    <option value="{$vo.id}"{if condition="$user['city_id'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
+                                    {/volist}
+                                </select>
+                                <select class="form-control j-area" name="area_id" required="" aria-required="true">
+                                    <option>请选择区域</option>
+                                    {volist name="area_list" id="vo"}
+                                    <option value="{$vo.id}"{if condition="$user['area_id'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">具体地址：</label>
+                            <div class="input-group col-sm-6">
+                                <input type="text" class="form-control" value="{$user.address}" name="address" required="" aria-required="true">
+                            </div>
+                        </div>
+
+
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-3 control-label">登录密码：</label>-->
+                            <!--<div class="input-group col-sm-4">-->
+                                <!--<input id="password" type="password" class="form-control" name="password"  placeholder="再次输入修改密码">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系人：</label>
+                            <div class="input-group col-sm-6">
+                                <input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true" value="{$user.real_name}">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系电话：</label>
+                            <div class="input-group col-sm-6">
+                                <input type="text" class="form-control" name="mobile" required="" aria-required="true" value="{$user.mobile}">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--重置密码-->
+<div class="m-statue-layer">
+    <div class="ibox-content">
+        <form role="form" method="post" class="m-status-from">
+            <div class="form-group" style="clear: both;">
+                <label class="col-sm-3 control-label"></label>
+                <div class="input-group">
+                    <p id="err_msg"></p>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="" class="j-uid">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">输入原密码</label>
+                <div class="input-group col-sm-8">
+                    <input type="password" class="form-control j-old-password" name="old_password" required="" aria-required="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">输入新密码</label>
+                <div class="input-group col-sm-8">
+                    <input type="password" class="form-control j-frist-pass" required="" aria-required="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">确认新密码</label>
+                <div class="input-group col-sm-8">
+                    <input type="password" class="form-control j-sure-pass" name="password" required="" aria-required="true">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+
+    //表单提交
+    function toVaild(){
+        var jz;
+        var url = "/admin/user/userEdit";
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:{'data' : $('#commentForm').serialize()},// 你的formid
+            async: false,
+            beforeSend:function(){
+                jz = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+            },
+            error: function(request) {
+                layer.close(jz);
+                swal("网络错误!", "", "error");
+            },
+            success: function(data) {
+                //关闭加载层
+                layer.close(jz);
+                if(data.code == 1){
+                    swal(data.msg, "", "success");
+                }else{
+                    swal(data.msg, "", "error");
+                }
+
+            }
+        });
+
+        return false;
+    }
+
+    //表单验证
+    $(document).ready(function(){
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+    });
+    $.validator.setDefaults({
+        highlight: function(e) {
+            $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
+        },
+        success: function(e) {
+            e.closest(".form-group").removeClass("has-error").addClass("has-success")
+        },
+        errorElement: "span",
+        errorPlacement: function(e, r) {
+            e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
+        },
+        errorClass: "help-block m-b-none",
+        validClass: "help-block m-b-none"
+    });
+    $(".j-select-area").bind('change',function(){
+        var city_id = $(this).children('option:selected').val(),
+                $this=$(this);
+        if(!city_id){
+            $this.siblings(".j-area").html('<select class="form-control j-area" ><option value="">请选择区域</option></select>');
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: "/admin/user/getArea",
+                data: {city_id:city_id},
+                dataType: 'json',
+                success: function(data){
+                    var result=data.resultList;
+                    if(Object.keys(data).length == 1){
+                        $this.siblings(".j-area").remove();
+                    }else{
+                        if($this.siblings(".j-area").length<=0){
+                            $this.after('<select class="form-control" name="area_id" id="area_id" ><option value="">请选择</option></select>');
+                        }
+                        var str = '<option value="">请选择</option>';
+                        for( var i=0;i<result.length;i++){
+                            str += " <option value='"+result[i]['id']+"'>"+result[i]['name']+"</option>";
+                        }
+                        $this.siblings(".j-area").children().remove();
+                        $this.siblings(".j-area").append(str);
+                    }
+                }
+            });
+        }
+    })
+    function resetPassword(id){
+        layer.open({
+            type: 1,
+            title:'重置密码',
+            area: ['500px', '300px'], //宽高
+            btn: ['确认', '取消'],
+            content: $('.m-statue-layer'),
+            success:function(){
+                $(".j-uid").val(id);
+            },
+            yes: function(){
+                var password=$('.j-sure-pass').val(),
+                    old=$('.j-old-password').val(),
+                    surepass=$('.j-sure-pass').val();
+                if(password !=="" && old!=="" && surepass !==""){
+                    $('#err_msg').hide();
+                    if($(".j-frist-pass").val()===password){
+                        $.ajax({
+                            url: './updatePass',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                'data' : $('.m-status-from').serialize()
+                                /* oldpass:$(".old_password").val(),
+                                 password : password*/
+                            },
+                            success:function(data){
+                                if(data.code==1){
+                                    layer.msg('重置成功');
+                                    setTimeout(function(){
+                                        layer.closeAll();
+                                    },500)
+                                }else{
+                                    layer.alert('重置失败');
+                                }
+                            }
+                        })
+                    }else{
+                        $('#err_msg').show().html("<span style='color:red'>两次密码输入不一致</span>");
+                    }
+                }else{
+                    $('#err_msg').show().html("<span style='color:red'>请填写完整相关信息</span>");
+                    return;
+                }
+
+
+            }, no: function(index){
+                layer.close(index);
+            }
+        })
+    }
+</script>
+</body>
+</html>

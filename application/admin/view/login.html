@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>免费教科书系统后台登录</title>
+    <link href="__CSS__/bootstrap.min.css" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css" rel="stylesheet">
+    <link href="__CSS__/login.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+
+</head>
+
+<body class="signin">
+<div class="signinpanel">
+    <div class="row">
+        <div class="signin-info">
+            <h2>湖北省免费教科书管理平台</h2>
+        </div>
+
+        <div class="m-login-from">
+            <div class="title">
+                登录
+            </div>
+            <form method="post" action="index.html" class="form-horizontal">
+                <div class="form-group" style="clear: both;">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="input-group">
+                        <p id="err_msg"></p>
+                    </div>
+                </div>
+
+                <div class="form-group" style="clear: both;">
+                    <label class="col-sm-3 control-label">用户名</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control uname" id="username" required="" aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">密码</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control pword m-b" id="password" required="" aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">验证码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="验证码" style="color:black;width:176px;float:left;margin:0px 0px;" name="code" id="code"/>
+                    <img src="{:url('checkVerify')}" onclick="javascript:this.src='{:url('checkVerify')}?tm='+Math.random();" style="float:right;cursor: pointer"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="input-group j-forget">
+                        <a href="javascript:;"class="j-right">忘记密码</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="input-group">
+                        <input class="btn btn-block" id="login_btn" value="登录"/>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="signup-footer">
+        <div class="">
+            Copyright © 2006-2017  湖北省新华书店
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    document.onkeydown=function(event){
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==13){ // enter 键
+            $('#login_btn').click();
+        }
+    };
+    var lock = false;
+    $(function () {
+        $('#login_btn').click(function(){
+            if(lock){
+                return;
+            }
+            lock = true;
+            $('#err_msg').hide();
+            $('#login_btn').removeClass('btn-success').addClass('btn-danger').val('登陆中...');
+            var username = $('#username').val();
+            var password = $('#password').val();
+            var code = $('#code').val();
+            $.post("{:url('login/doLogin')}",{'username':username, 'password':password, 'code':code},function(data){
+                lock = false;
+                $('#login_btn').val('登录').removeClass('btn-danger').addClass('btn-success');
+                if(data.code!=1){
+                    $('#err_msg').show().html("<span style='color:red'>"+data.msg+"</span>");
+                    return;
+                }else{
+                    window.location.href=data.data;
+                }
+            });
+        });
+    });
+    $(".j-right").click(function(){
+        layer.alert('请联系上级单位为您重置密码！');
+    })
+</script>
+</body>
+</html>
